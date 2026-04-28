@@ -114,6 +114,11 @@ body {
     padding: 72px 0;
 }
 
+.contact-page {
+    width: 100%;
+    padding: 72px 0;
+}
+
 .auth-page {
     width: 100%;
     padding: 72px 0;
@@ -151,6 +156,143 @@ body {
     color: #5c5148;
 }
 
+.contact-hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.contact-hero h1 {
+    font-size: 2.6rem;
+    line-height: 1.2;
+    margin-bottom: 0.85rem;
+    color: #1f1a17;
+}
+
+.contact-hero p,
+.contact-section-heading p {
+    max-width: 760px;
+    margin: 0 auto;
+    color: #5c5148;
+    font-size: 1.05rem;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.contact-info-card,
+.contact-form-card,
+.store-location-card {
+    background: linear-gradient(135deg, #fffaf5 0%, #f2e5d6 100%);
+    border: 1px solid #e3d6c8;
+    border-radius: 1.5rem;
+    box-shadow: 0 18px 40px rgba(72, 55, 39, 0.08);
+}
+
+.contact-info-card,
+.contact-form-card {
+    padding: 2rem;
+}
+
+.contact-page__section-title {
+    font-size: 1.7rem;
+    line-height: 1.2;
+    color: #1f1a17;
+    margin-bottom: 1rem;
+}
+
+.contact-info-list {
+    display: grid;
+    gap: 0.95rem;
+    color: #4f443c;
+}
+
+.contact-info-list strong {
+    color: #1f1a17;
+}
+
+.contact-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.form-textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.contact-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 0.95rem 1.2rem;
+    border: 0;
+    border-radius: 999px;
+    background: #211a16;
+    color: #ffffff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.contact-submit:hover,
+.contact-submit:focus {
+    background: #4a352a;
+    transform: translateY(-1px);
+}
+
+.contact-section-heading {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.store-location-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.store-location-card {
+    padding: 1.75rem 1.5rem;
+}
+
+.store-location-card h3 {
+    font-size: 1.25rem;
+    color: #1f1a17;
+    margin-bottom: 0.75rem;
+}
+
+.store-location-card p {
+    color: #5c5148;
+}
+
+.store-location-card p + p {
+    margin-top: 0.35rem;
+}
+
+.map-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 999px;
+    background: #211a16;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.map-link:hover,
+.map-link:focus {
+    background: #4a352a;
+}
+
 .auth-card {
     width: min(100%, 620px);
     margin: 0 auto;
@@ -174,6 +316,17 @@ body {
     margin: 0 auto 1.75rem;
     text-align: center;
     color: #5c5148;
+}
+
+.auth-note {
+    margin: 0 0 1.5rem;
+    padding: 0.9rem 1rem;
+    border: 1px solid #e3d6c8;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, 0.55);
+    color: #5c5148;
+    text-align: center;
+    font-size: 0.95rem;
 }
 
 .auth-form {
@@ -215,6 +368,13 @@ body {
     color: #8d3d37;
     display: grid;
     gap: 0.4rem;
+}
+
+.form-error-message {
+    min-height: 1.2rem;
+    margin-top: 0.15rem;
+    color: #b0433b;
+    font-size: 0.9rem;
 }
 
 .form-success {

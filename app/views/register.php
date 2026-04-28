@@ -96,55 +96,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                 <?php endif; ?>
 
-                <form class="auth-form" action="index.php?page=register" method="post" novalidate>
+                <form class="auth-form" id="registerForm" action="index.php?page=register" method="post" novalidate>
                     <div class="form-group">
-                        <label for="name">Full Name</label>
+                        <label for="registerName">Full Name</label>
                         <input
                             class="form-input"
                             type="text"
-                            id="name"
+                            id="registerName"
                             name="name"
                             maxlength="100"
                             required
                             value="<?php echo htmlspecialchars($name, ENT_QUOTES, 'UTF-8'); ?>"
                         >
+                        <div class="form-error-message" data-error-for="registerName"></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="email">Email</label>
+                        <label for="registerEmail">Email</label>
                         <input
                             class="form-input"
                             type="email"
-                            id="email"
+                            id="registerEmail"
                             name="email"
                             maxlength="150"
                             required
                             value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>"
                         >
+                        <div class="form-error-message" data-error-for="registerEmail"></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="registerPassword">Password</label>
                         <input
                             class="form-input"
                             type="password"
-                            id="password"
+                            id="registerPassword"
                             name="password"
                             maxlength="255"
                             required
                         >
+                        <div class="form-error-message" data-error-for="registerPassword"></div>
                     </div>
 
                     <div class="form-group">
-                        <label for="confirm_password">Confirm Password</label>
+                        <label for="registerConfirmPassword">Confirm Password</label>
                         <input
                             class="form-input"
                             type="password"
-                            id="confirm_password"
+                            id="registerConfirmPassword"
                             name="confirm_password"
                             maxlength="255"
                             required
                         >
+                        <div class="form-error-message" data-error-for="registerConfirmPassword"></div>
                     </div>
 
                     <button class="auth-submit" type="submit">Register</button>

@@ -67,28 +67,30 @@ if (isset($_SESSION['user_id'])) {
                         </ul>
                     <?php endif; ?>
 
-                    <form class="auth-form" action="index.php?page=login" method="post" novalidate>
+                    <form class="auth-form" id="loginForm" action="index.php?page=login" method="post" novalidate>
                         <div class="form-group">
-                            <label for="email">Email</label>
+                            <label for="loginEmail">Email</label>
                             <input
                                 class="form-input"
                                 type="email"
-                                id="email"
+                                id="loginEmail"
                                 name="email"
                                 required
                                 value="<?php echo htmlspecialchars($email, ENT_QUOTES, 'UTF-8'); ?>"
                             >
+                            <div class="form-error-message" data-error-for="loginEmail"></div>
                         </div>
 
                         <div class="form-group">
-                            <label for="password">Password</label>
+                            <label for="loginPassword">Password</label>
                             <input
                                 class="form-input"
                                 type="password"
-                                id="password"
+                                id="loginPassword"
                                 name="password"
                                 required
                             >
+                            <div class="form-error-message" data-error-for="loginPassword"></div>
                         </div>
 
                         <button class="auth-submit" type="submit">Login</button>
