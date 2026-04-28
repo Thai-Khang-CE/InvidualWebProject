@@ -19,6 +19,31 @@ $allowedPages = [
 ];
 
 $page = isset($_GET['page']) && is_string($_GET['page']) ? $_GET['page'] : 'home';
+$pageTitle = 'Seasonal Wardrobe';
+$pageDescription = 'Seasonal Wardrobe is a seasonal fashion store for Spring, Summer, Autumn, and Winter collections.';
+$preloadedProduct = null;
+
+$truncateText = static function (string $text, int $length = 150): string {
+    $text = trim(preg_replace('/\s+/', ' ', $text) ?? '');
+
+    if ($text === '') {
+        return '';
+    }
+
+    if (function_exists('mb_strlen') && function_exists('mb_substr')) {
+        if (mb_strlen($text) <= $length) {
+            return $text;
+        }
+
+        return rtrim(mb_substr($text, 0, $length - 3)) . '...';
+    }
+
+    if (strlen($text) <= $length) {
+        return $text;
+    }
+
+    return rtrim(substr($text, 0, $length - 3)) . '...';
+};
 
 if ($page === 'logout') {
     $_SESSION = [];
@@ -72,6 +97,69 @@ if ($page === 'api_search') {
 }
 
 $viewFile = $allowedPages[$page] ?? __DIR__ . '/../app/views/404.php';
+
+switch ($page) {
+    case 'home':
+        $pageTitle = 'Home';
+        $pageDescription = 'Discover Seasonal Wardrobe, a fashion store organized by Spring, Summer, Autumn, and Winter collections.';
+        break;
+    case 'products':
+        $pageTitle = 'Products';
+        $pageDescription = 'Browse seasonal fashion products including shirts, dresses, shoes, jackets, and accessories.';
+        break;
+    case 'search':
+        $pageTitle = 'Search Products';
+        $pageDescription = 'Search seasonal fashion products dynamically by name, collection, or product type.';
+        break;
+    case 'contact':
+        $pageTitle = 'Contact';
+        $pageDescription = 'Contact Seasonal Wardrobe and find our store locations in Ho Chi Minh City.';
+        break;
+    case 'login':
+        $pageTitle = 'Login';
+        $pageDescription = 'Log in to your Seasonal Wardrobe account.';
+        break;
+    case 'register':
+        $pageTitle = 'Register';
+        $pageDescription = 'Create a Seasonal Wardrobe account to access member features.';
+        break;
+    case 'forgot-password':
+        $pageTitle = 'Forgot Password';
+        $pageDescription = 'Reset your Seasonal Wardrobe account password.';
+        break;
+    case 'product':
+        $productSlug = isset($_GET['slug']) && is_string($_GET['slug']) ? trim($_GET['slug']) : '';
+
+        if ($productSlug === '') {
+            $pageTitle = 'Product Not Found';
+            $pageDescription = 'The requested product could not be found at Seasonal Wardrobe.';
+            break;
+        }
+
+        try {
+            $productModel = new Product();
+            $preloadedProduct = $productModel->getProductBySlug($productSlug);
+        } catch (Throwable $exception) {
+            $preloadedProduct = null;
+        }
+
+        if ($preloadedProduct === null) {
+            $pageTitle = 'Product Not Found';
+            $pageDescription = 'The requested product could not be found at Seasonal Wardrobe.';
+        } else {
+            $pageTitle = $preloadedProduct['product_name'];
+            $pageDescription = $truncateText((string) $preloadedProduct['description']);
+
+            if ($pageDescription === '') {
+                $pageDescription = 'Explore this seasonal fashion item at Seasonal Wardrobe.';
+            }
+        }
+        break;
+    default:
+        $pageTitle = 'Page Not Found';
+        $pageDescription = 'The page you are looking for could not be found.';
+        break;
+}
 
 require_once __DIR__ . '/../app/views/layouts/header.php';
 require_once __DIR__ . '/../app/views/layouts/navbar.php';

@@ -20,10 +20,14 @@ $breadcrumbItems = [
 if ($productSlug === '') {
     $productNotFound = true;
 } else {
-    try {
-        $product = $productModel->getProductBySlug($productSlug);
-    } catch (Throwable $exception) {
-        $product = null;
+    if (isset($preloadedProduct) && is_array($preloadedProduct)) {
+        $product = $preloadedProduct;
+    } else {
+        try {
+            $product = $productModel->getProductBySlug($productSlug);
+        } catch (Throwable $exception) {
+            $product = null;
+        }
     }
 
     if ($product === null) {
