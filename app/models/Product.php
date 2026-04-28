@@ -115,4 +115,50 @@ class Product
 
         return $product ?: null;
     }
+
+    public function searchProducts($keyword, $limit = 10): array
+    {
+        $limit = (int) $limit;
+
+        if ($limit < 1 || $limit > 50) {
+            $limit = 10;
+        }
+
+        $searchKeyword = '%' . trim((string) $keyword) . '%';
+
+        $sql = "
+            SELECT
+                p.id,
+                p.name,
+                p.slug,
+                p.product_type,
+                p.description,
+                p.price,
+                p.image,
+                p.rating,
+                p.stock,
+                c.name AS category_name,
+                c.slug AS category_slug
+            FROM products p
+            INNER JOIN categories c ON p.category_id = c.id
+            WHERE p.name LIKE :keyword_name
+               OR p.product_type LIKE :keyword_type
+               OR p.description LIKE :keyword_description
+               OR c.name LIKE :keyword_category_name
+               OR c.slug LIKE :keyword_category_slug
+            ORDER BY p.rating DESC, p.name ASC
+            LIMIT :limit
+        ";
+
+        $statement = $this->connection->prepare($sql);
+        $statement->bindValue(':keyword_name', $searchKeyword, PDO::PARAM_STR);
+        $statement->bindValue(':keyword_type', $searchKeyword, PDO::PARAM_STR);
+        $statement->bindValue(':keyword_description', $searchKeyword, PDO::PARAM_STR);
+        $statement->bindValue(':keyword_category_name', $searchKeyword, PDO::PARAM_STR);
+        $statement->bindValue(':keyword_category_slug', $searchKeyword, PDO::PARAM_STR);
+        $statement->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $statement->execute();
+
+        return $statement->fetchAll();
+    }
 }
