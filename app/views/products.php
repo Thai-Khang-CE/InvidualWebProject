@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Product.php';
 require_once __DIR__ . '/../models/Category.php';
+require_once __DIR__ . '/../helpers/breadcrumb.php';
 
 $productModel = new Product();
 $categoryModel = new Category();
@@ -24,6 +25,10 @@ $selectedCategory = null;
 $categoryNotFound = false;
 $pageTitle = 'Products';
 $description = 'Explore seasonal fashion items from Spring, Summer, Autumn, and Winter collections.';
+$breadcrumbItems = [
+    ['label' => 'Home', 'url' => 'index.php?page=home'],
+    ['label' => 'Products', 'url' => null],
+];
 
 if (isset($_GET['p']) && is_scalar($_GET['p'])) {
     $requestedPage = (string) $_GET['p'];
@@ -60,8 +65,18 @@ try {
 
         if ($selectedCategory === null) {
             $categoryNotFound = true;
+            $breadcrumbItems = [
+                ['label' => 'Home', 'url' => 'index.php?page=home'],
+                ['label' => 'Products', 'url' => 'index.php?page=products'],
+                ['label' => 'Category Not Found', 'url' => null],
+            ];
         } else {
             $pageTitle = $selectedCategory['name'];
+            $breadcrumbItems = [
+                ['label' => 'Home', 'url' => 'index.php?page=home'],
+                ['label' => 'Products', 'url' => 'index.php?page=products'],
+                ['label' => $selectedCategory['name'], 'url' => null],
+            ];
         }
     }
 
@@ -83,16 +98,18 @@ try {
     $totalPages = 0;
 }
 ?>
-<main class="site-main">
-    <section class="page-section">
+<main class="page-main">
+    <section class="products-page">
         <div class="container">
+            <?php renderBreadcrumb($breadcrumbItems); ?>
+
             <div class="products-header">
                 <h1><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></h1>
                 <p><?php echo htmlspecialchars($description, ENT_QUOTES, 'UTF-8'); ?></p>
             </div>
 
-            <div class="product-filters" aria-label="Product categories">
-                <a class="product-filter-link <?php echo $selectedCategorySlug === '' ? 'is-active' : ''; ?>" href="<?php echo buildProductsUrl(null, $selectedSort); ?>">All</a>
+            <div class="category-filters" aria-label="Product categories">
+                <a class="category-filter <?php echo $selectedCategorySlug === '' ? 'category-filter--active' : ''; ?>" href="<?php echo buildProductsUrl(null, $selectedSort); ?>">All</a>
 
                 <?php foreach ($categories as $category) : ?>
                     <?php
@@ -101,7 +118,7 @@ try {
                     $isActive = $selectedCategorySlug !== '' && $selectedCategorySlug === $category['slug'];
                     ?>
                     <a
-                        class="product-filter-link <?php echo $isActive ? 'is-active' : ''; ?>"
+                        class="category-filter <?php echo $isActive ? 'category-filter--active' : ''; ?>"
                         href="<?php echo buildProductsUrl($categorySlug, $selectedSort); ?>"
                     >
                         <?php echo $categoryName; ?>
@@ -109,22 +126,22 @@ try {
                 <?php endforeach; ?>
             </div>
 
-            <div class="product-toolbar">
-                <form class="product-sort-form" action="index.php" method="get">
+            <div class="products-toolbar">
+                <form class="sort-form" action="index.php" method="get">
                     <input type="hidden" name="page" value="products">
                     <?php if ($selectedCategorySlug !== '') : ?>
                         <input type="hidden" name="category" value="<?php echo htmlspecialchars($selectedCategorySlug, ENT_QUOTES, 'UTF-8'); ?>">
                     <?php endif; ?>
 
-                    <label class="product-sort-label" for="sort">Sort by</label>
-                    <select class="product-sort-select" name="sort" id="sort">
+                    <label for="sort">Sort by</label>
+                    <select name="sort" id="sort">
                         <?php foreach ($allowedSorts as $sortValue => $sortLabel) : ?>
                             <option value="<?php echo htmlspecialchars($sortValue, ENT_QUOTES, 'UTF-8'); ?>" <?php echo $selectedSort === $sortValue ? 'selected' : ''; ?>>
                                 <?php echo htmlspecialchars($sortLabel, ENT_QUOTES, 'UTF-8'); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
-                    <button class="product-sort-button" type="submit">Apply</button>
+                    <button type="submit">Apply</button>
                 </form>
             </div>
 
@@ -144,26 +161,24 @@ try {
                         $imagePath = 'images/products/' . $productImage;
                         ?>
                         <article class="product-card">
-                            <div class="product-card-image-wrapper">
-                                <img
-                                    class="product-card-image"
-                                    src="<?php echo htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>"
-                                    alt="<?php echo $productName; ?>"
-                                >
-                            </div>
+                            <img
+                                class="product-card__image"
+                                src="<?php echo htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>"
+                                alt="<?php echo $productName; ?>"
+                            >
 
-                            <div class="product-card-content">
-                                <p class="product-card-category"><?php echo $categoryName; ?></p>
-                                <h2><?php echo $productName; ?></h2>
-                                <p class="product-card-type"><?php echo $productType; ?></p>
+                            <div class="product-card__body">
+                                <p class="product-card__category"><?php echo $categoryName; ?></p>
+                                <h2 class="product-card__title"><?php echo $productName; ?></h2>
+                                <p class="product-card__type"><?php echo $productType; ?></p>
 
-                                <div class="product-card-meta">
+                                <div class="product-card__meta">
                                     <span>$<?php echo htmlspecialchars(number_format((float) $product['price'], 2), ENT_QUOTES, 'UTF-8'); ?></span>
                                     <span>Rating: <?php echo htmlspecialchars(number_format((float) $product['rating'], 1), ENT_QUOTES, 'UTF-8'); ?></span>
                                     <span>Stock: <?php echo htmlspecialchars((string) $product['stock'], ENT_QUOTES, 'UTF-8'); ?></span>
                                 </div>
 
-                                <a class="page-link product-card-link" href="index.php?page=product&amp;slug=<?php echo $productSlug; ?>">View Details</a>
+                                <a class="product-card__link" href="index.php?page=product&amp;slug=<?php echo $productSlug; ?>">View Details</a>
                             </div>
                         </article>
                     <?php endforeach; ?>
