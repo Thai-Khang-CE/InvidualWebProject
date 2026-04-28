@@ -1,15 +1,19 @@
-<?php require_once __DIR__ . '/../app/views/layouts/header.php'; ?>
-<?php require_once __DIR__ . '/../app/views/layouts/navbar.php'; ?>
+<?php
+$allowedPages = [
+    'home' => __DIR__ . '/../app/views/home.php',
+    'products' => __DIR__ . '/../app/views/products.php',
+    'search' => __DIR__ . '/../app/views/search.php',
+    'contact' => __DIR__ . '/../app/views/contact.php',
+    'login' => __DIR__ . '/../app/views/login.php',
+    'register' => __DIR__ . '/../app/views/register.php',
+    'forgot-password' => __DIR__ . '/../app/views/forgot-password.php',
+];
 
-<main class="site-main">
-    <section class="hero-section">
-        <div class="container hero-content">
-            <p class="hero-label">Seasonal Fashion Store</p>
-            <h1>Welcome to Seasonal Wardrobe</h1>
-            <p class="hero-text">A fashion store organized by Spring, Summer, Autumn, and Winter collections.</p>
-            <a class="hero-button" href="index.php?page=products">Explore Products</a>
-        </div>
-    </section>
-</main>
+$page = isset($_GET['page']) && is_string($_GET['page']) ? $_GET['page'] : 'home';
+$viewFile = $allowedPages[$page] ?? __DIR__ . '/../app/views/404.php';
 
-<?php require_once __DIR__ . '/../app/views/layouts/footer.php'; ?>
+require_once __DIR__ . '/../app/views/layouts/header.php';
+require_once __DIR__ . '/../app/views/layouts/navbar.php';
+require_once $viewFile;
+require_once __DIR__ . '/../app/views/layouts/footer.php';
+?>
