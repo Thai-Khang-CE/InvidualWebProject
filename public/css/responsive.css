@@ -13,7 +13,9 @@
         gap: 12px 18px;
     }
 
-    .hero-section {
+    .home-hero,
+    .home-section,
+    .home-section-soft {
         padding: 40px 0;
     }
 
@@ -26,12 +28,40 @@
         font-size: 2.1rem;
     }
 
+    .hero-subtitle {
+        font-size: 1.05rem;
+    }
+
     .hero-text {
         font-size: 1rem;
     }
 
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-primary,
+    .button-secondary,
     .hero-button {
         width: 100%;
         max-width: 260px;
+    }
+
+    .section-heading h2,
+    .cta-panel h2 {
+        font-size: 1.8rem;
+    }
+
+    .collection-grid,
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .page-card,
+    .collection-card,
+    .feature-card,
+    .cta-panel {
+        padding: 32px 22px;
     }
 }
