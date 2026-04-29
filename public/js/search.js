@@ -33,6 +33,17 @@ document.addEventListener('DOMContentLoaded', function () {
         return item;
     }
 
+    function attachImageFallback(image) {
+        image.addEventListener('error', function () {
+            if (image.dataset.fallbackApplied === 'true') {
+                return;
+            }
+
+            image.dataset.fallbackApplied = 'true';
+            image.src = 'images/products/placeholder.svg';
+        });
+    }
+
     function updateSearchUrl(keyword) {
         var nextUrl = 'index.php?page=search';
 
@@ -60,8 +71,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             var image = document.createElement('img');
             image.className = 'search-result-card__image';
-            image.setAttribute('src', 'images/products/' + String(product.image || ''));
-            image.setAttribute('alt', String(product.name || 'Product image'));
+            image.src = 'images/products/' + String(product.image || '');
+            image.alt = String(product.name || 'Product image');
+            attachImageFallback(image);
             article.appendChild(image);
 
             var body = document.createElement('div');

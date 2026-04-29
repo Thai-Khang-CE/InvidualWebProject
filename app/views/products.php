@@ -165,6 +165,7 @@ try {
                                 class="product-card__image"
                                 src="<?php echo htmlspecialchars($imagePath, ENT_QUOTES, 'UTF-8'); ?>"
                                 alt="<?php echo $productName; ?>"
+                                onerror="this.onerror=null; this.src='images/products/placeholder.svg';"
                             >
 
                             <div class="product-card__body">

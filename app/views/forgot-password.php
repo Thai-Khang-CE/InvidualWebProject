@@ -42,22 +42,9 @@ if (isset($_SESSION['user_id'])) {
 
         if (empty($errors)) {
             try {
-                if (!$userModel->emailExists($email)) {
-                    $errors[] = 'No account was found with that email address.';
-                }
-            } catch (Throwable $exception) {
-                $errors[] = 'Unable to verify your email right now. Please try again.';
-            }
-        }
-
-        if (empty($errors)) {
-            try {
-                if ($userModel->updatePasswordByEmail($email, $newPassword)) {
-                    $successMessage = 'Password reset successful. You can now log in with your new password.';
-                    $email = '';
-                } else {
-                    $errors[] = 'Password reset failed. Please try again.';
-                }
+                $userModel->updatePasswordByEmail($email, $newPassword);
+                $successMessage = 'If an account with that email exists, the password has been reset. You can now try logging in.';
+                $email = '';
             } catch (Throwable $exception) {
                 $errors[] = 'Password reset failed. Please try again.';
             }

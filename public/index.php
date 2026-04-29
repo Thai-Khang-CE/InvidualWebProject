@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 ob_start();
 
 require_once __DIR__ . '/../app/models/Product.php';
+require_once __DIR__ . '/../app/models/Category.php';
 
 $allowedPages = [
     'home' => __DIR__ . '/../app/views/home.php',
@@ -106,6 +107,33 @@ switch ($page) {
     case 'products':
         $pageTitle = 'Products';
         $pageDescription = 'Browse seasonal fashion products including shirts, dresses, shoes, jackets, and accessories.';
+
+        $categorySlug = isset($_GET['category']) && is_string($_GET['category']) ? trim($_GET['category']) : '';
+
+        if ($categorySlug !== '') {
+            $categoryDescriptions = [
+                'spring' => 'Browse Spring Collection fashion items including light layers, fresh outfits, and seasonal essentials.',
+                'summer' => 'Browse Summer Collection fashion items including breathable fabrics, relaxed fits, and warm-weather essentials.',
+                'autumn' => 'Browse Autumn Collection fashion items including cozy textures, neutral colors, and transitional pieces.',
+                'winter' => 'Browse Winter Collection fashion items including warm coats, knitwear, boots, and cold-weather essentials.',
+            ];
+
+            try {
+                $categoryModel = new Category();
+                $category = $categoryModel->getCategoryBySlug($categorySlug);
+            } catch (Throwable $exception) {
+                $category = null;
+            }
+
+            if ($category === null) {
+                $pageTitle = 'Category Not Found';
+                $pageDescription = 'The requested category could not be found at Seasonal Wardrobe.';
+            } else {
+                $pageTitle = $category['name'];
+                $pageDescription = $categoryDescriptions[$categorySlug]
+                    ?? ('Browse ' . $category['name'] . ' fashion items at Seasonal Wardrobe.');
+            }
+        }
         break;
     case 'search':
         $pageTitle = 'Search Products';
